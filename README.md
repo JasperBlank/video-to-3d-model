@@ -33,7 +33,9 @@ cd video-to-3d-model
 pip install -r requirements.txt
 ```
 
-## CLI
+## Quick Start
+
+Run the pipeline once:
 
 ```bash
 python main.py --video "C:\path\to\object.mp4"
@@ -48,6 +50,31 @@ Useful flags:
 - `--size-mm 120`: scale longest mesh dimension to a target print size
 - `--grabcut-iterations 3`: spend more work on segmentation
 - `--consensus-ratio 0.75`: require more silhouette agreement and get a stricter hull
+
+## Note On The House Comparison Renders
+
+The earlier "3 scale renders" wording was incorrect.
+
+For the house video, the three panels were:
+
+- left: the original source image
+- middle: the Python render from the same camera pose and same field of view
+- right: the Python render from the same camera pose with a 40 degree wider field of view
+
+That comparison does not come from this minimal silhouette repo.
+It comes from the gsplat workflow in the sibling project:
+
+- [render_all_cameras.py](C:/Users/jjbla/OneDrive/Documents/Playground/video_to_3d_model/tools/render_all_cameras.py): original image + same-view gsplat render
+- [render_wide_fov.py](C:/Users/jjbla/OneDrive/Documents/Playground/video_to_3d_model/tools/render_wide_fov.py): original image + same-view render + wider-FOV render
+
+Relevant existing outputs for the house scene:
+
+- [my_house_gsplat/camera_renders](C:/Users/jjbla/OneDrive/Documents/Playground/video_to_3d_model/results/my_house_gsplat/camera_renders)
+- [my_house_gsplat_3fps/camera_renders](C:/Users/jjbla/OneDrive/Documents/Playground/video_to_3d_model/results/my_house_gsplat_3fps/camera_renders)
+- [my_house_gsplat_3fps/wide_fov_renders](C:/Users/jjbla/OneDrive/Documents/Playground/video_to_3d_model/results/my_house_gsplat_3fps/wide_fov_renders)
+
+In `render_wide_fov.py`, the wide-view render is produced by lowering the focal length while keeping the same camera pose and image size.
+The script currently uses `EXTRA_DEG = 20.0`, which means 20 degrees extra on each side, or about 40 degrees wider total horizontal FOV.
 
 ## GUI
 
